@@ -7,7 +7,6 @@ from typing import Any
 import allure
 from playwright.sync_api import Locator, Page, expect
 
-from enums.account import AccountName
 from pages.base_page import BasePage
 
 
@@ -47,8 +46,7 @@ class BillPayPage(BasePage):
         self.open()
         expect(self.page_heading).to_be_visible()
 
-        from_account = AccountName(bill_data["from_account"])
-        self.select_from_dropdown(self.from_account_select, from_account.value)
+        self.select_from_dropdown(self.from_account_select, bill_data["from_account"])
         self._ensure_biller(bill_data)
         self.amount_input.fill(str(bill_data["amount"]))
 

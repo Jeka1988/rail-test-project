@@ -7,7 +7,6 @@ from typing import Any
 import allure
 from playwright.sync_api import Page, expect
 
-from enums.account import AccountName
 from pages.base_page import BasePage
 
 
@@ -34,11 +33,8 @@ class TransferPage(BasePage):
         self.open()
         expect(self.page_heading).to_be_visible()
 
-        from_account = AccountName(transfer_data["from_account"])
-        to_account = AccountName(transfer_data["to_account"])
-
-        self.select_from_dropdown(self.from_account_select, from_account.value)
-        self.select_from_dropdown(self.to_account_select, to_account.value)
+        self.select_from_dropdown(self.from_account_select, transfer_data["from_account"])
+        self.select_from_dropdown(self.to_account_select, transfer_data["to_account"])
         self.amount_input.fill(str(transfer_data["amount"]))
 
         memo = transfer_data.get("memo")

@@ -8,7 +8,6 @@ from typing import Any
 import allure
 from playwright.sync_api import Locator, Page, expect
 
-from enums.account import AccountType
 from pages.base_page import BasePage
 from utils.money import parse_currency
 
@@ -45,9 +44,8 @@ class AccountsPage(BasePage):
         self.add_account_button.click()
         expect(self.add_account_dialog).to_be_visible()
 
-        account_type = AccountType(account["type"])
         self.account_name_input.fill(account["name"])
-        self.select_from_dropdown(self.account_type_select, account_type.value)
+        self.select_from_dropdown(self.account_type_select, account["type"])
         self.opening_balance_input.fill(str(account["opening_balance"]))
 
         if self.accept_terms_checkbox.count() > 0:

@@ -6,7 +6,7 @@ from typing import Any
 
 import allure
 
-from enums.account import AccountName, CredentialKey, PageName
+from enums.account import CredentialKey, PageName
 from pages.accounts_page import AccountsPage
 from pages.bill_pay_page import BillPayPage
 from pages.dashboard_page import DashboardPage
@@ -47,7 +47,6 @@ class BankApp:
     @allure.step("Create required lifecycle accounts")
     def create_required_accounts(self, accounts: list[dict[str, Any]]) -> None:
         for account in accounts:
-            AccountName(account["name"])
             self.accounts_page.create_account(account)
 
     @allure.step("Capture baseline net worth")

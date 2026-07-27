@@ -7,7 +7,6 @@ from typing import Any
 import allure
 from playwright.sync_api import Locator, Page, expect
 
-from enums.account import AccountName
 from pages.base_page import BasePage
 
 
@@ -43,8 +42,7 @@ class SendMoneyPage(BasePage):
         self.open()
         expect(self.page_heading).to_be_visible()
 
-        from_account = AccountName(send_data["from_account"])
-        self.select_from_dropdown(self.from_account_select, from_account.value)
+        self.select_from_dropdown(self.from_account_select, send_data["from_account"])
         self._ensure_payee(send_data)
         self.amount_input.fill(str(send_data["amount"]))
 

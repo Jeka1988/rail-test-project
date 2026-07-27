@@ -21,6 +21,7 @@ class BasePage:
         ).or_(
             page.get_by_text(re.compile(r"success|completed|transferred|sent|paid", re.I))
         )
+        self.visible_options = page.locator("[role='option']:visible")
 
     @property
     def app_origin(self) -> str:
@@ -41,8 +42,8 @@ class BasePage:
         self.page.reload()
 
     def visible_option(self, text: str) -> Locator:
-        """Dynamic locator for a visible dropdown option containing text."""
-        return self.page.locator("[role='option']:visible").filter(has_text=text)
+        """Filter the declared visible-options locator by option text."""
+        return self.visible_options.filter(has_text=text)
 
     def select_from_dropdown(self, dropdown: Locator, value: str) -> None:
         """Select a value from a page-owned dropdown locator."""

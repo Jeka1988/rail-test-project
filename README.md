@@ -54,6 +54,20 @@ Optional local overrides:
 cp .env.example .env
 ```
 
+Every E2E field in `config/test_data.yaml` can be overridden via environment variables (see `.env.example`). Account names and types are plain strings, so alternate values work without editing enums.
+
+Inline override examples:
+
+```bash
+BANK_USERNAME=overdraft_user BANK_PASSWORD=bank_sauce TRANSFER_AMOUNT=50 pytest -m e2e
+```
+
+```bash
+TEST_DATA_PATH=config/test_data_alt.yaml pytest -m e2e
+```
+
+Useful overrides include credentials (`BANK_USERNAME`, `BANK_PASSWORD`), accounts (`CHECKING_ACCOUNT_NAME`, `SAVINGS_ACCOUNT_TYPE`, …), transfer (`TRANSFER_FROM`, `TRANSFER_AMOUNT`, …), send money (`SEND_AMOUNT`, `PAYEE_NAME`, …), and bill pay (`BILL_AMOUNT`, `BILLER_NAME`, …). Set `TEST_DATA_PATH` to swap the full YAML file.
+
 ## Run Tests
 
 ```bash
@@ -110,7 +124,7 @@ The assignment requires Python, so the suite uses pytest equivalents:
 - Separation between test and UI logic: tests only call page/facade methods.
 - Stable reruns: storage reset and fresh browser context.
 - Dynamic UI handling: Playwright assertions and bounded waits.
-- Parameterization: data lives in `config/test_data.yaml` and can be overridden by `.env`.
+- Parameterization: data lives in `config/test_data.yaml` and is fully overridable via env vars or `TEST_DATA_PATH`.
 - Reporting: pytest-html, Allure steps, screenshots, and traces.
 - README: setup, first run, and execution commands are documented here.
 

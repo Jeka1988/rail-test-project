@@ -7,7 +7,7 @@ from typing import Any
 import pytest
 from playwright.sync_api import expect
 
-from enums.account import AccountName, ScenarioName
+from enums.account import ScenarioName
 from pages.bank_app import BankApp
 from utils.money import expected_lifecycle_balances, format_currency
 
@@ -33,7 +33,7 @@ class TestAccountLifecycle:
 
         bank_app.create_required_accounts(test_data["accounts"])
         for account in test_data["accounts"]:
-            account_name = AccountName(account["name"]).value
+            account_name = account["name"]
             bank_app.accounts_page.open_accounts()
             expect(bank_app.accounts_page.account_text(account_name)).to_be_visible()
 
@@ -42,7 +42,7 @@ class TestAccountLifecycle:
 
         expected_balances = expected_lifecycle_balances(test_data)
         for account in test_data["accounts"]:
-            account_name = AccountName(account["name"]).value
+            account_name = account["name"]
             bank_app.accounts_page.open_accounts()
             actual_balance = bank_app.accounts_page.get_account_balance(account_name)
             assert actual_balance == expected_balances[account_name], (
