@@ -1,0 +1,35 @@
+base_url: https://qaplayground.com/bank
+
+credentials:
+  username: standard_user
+  password: bank_sauce
+
+accounts:
+  - name: Checking Account
+    type: Checking
+    opening_balance: 5000.00
+  - name: Savings Account
+    type: Savings
+    opening_balance: 2000.00
+
+transfer:
+  from_account: Checking Account
+  to_account: Savings Account
+  amount: 250.00
+  memo: Monthly savings transfer
+
+send_money:
+  from_account: Checking Account
+  payee_name: Alex Rivera
+  payee_bank: Demo National Bank
+  payee_routing: "123456789"
+  payee_account: "9876543210"
+  amount: 100.00
+  note: Birthday gift
+
+bill_pay:
+  from_account: Checking Account
+  biller_name: Electric Co
+  biller_reference: ACC-0042
+  amount: 75.50
+  memo: July utility bill

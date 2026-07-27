@@ -1,0 +1,39 @@
+"""Load test data from YAML and environment variables."""
+
+from __future__ import annotations
+
+import os
+from pathlib import Path
+from typing import Any
+
+import yaml
+from dotenv import load_dotenv
+
+ROOT_DIR = Path(__file__).resolve().parent.parent
+DEFAULT_DATA_PATH = ROOT_DIR / "config" / "test_data.yaml"
+
+
+def load_test_data(path: Path | None = None) -> dict[str, Any]:
+    """Load YAML test data and apply optional environment overrides."""
+    load_dotenv(ROOT_DIR / ".env")
+    data_path = path or DEFAULT_DATA_PATH
+
+    with data_path.open(encoding="utf-8") as data_file:
+        data: dict[str, Any] = yaml.safe_load(data_file)
+
+    data["base_url"] = os.getenv("BASE_URL", data["base_url"])
+
+    credentials = data["credentials"]
+    credentials["username"] = os.getenv("BANK_USERNAME", credentials["username"])
+    credentials["password"] = os.getenv("BANK_PASSWORD", credentials["password"])
+
+    _override_amount(data["transfer"], "amount", "TRANSFER_AMOUNT")
+    _override_amount(data["send_money"], "amount", "SEND_MONEY_AMOUNT")
+    _override_amount(data["bill_pay"], "amount", "BILL_PAY_AMOUNT")
+
+    return data
+
+
+def _override_amount(section: dict[str, Any], key: str, env_name: str) -> None:
+    if os.getenv(env_name):
+        section[key] = float(os.environ[env_name])

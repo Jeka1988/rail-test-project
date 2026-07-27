@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rail-test-project"
+version = "0.1.0"
+description = "Bank QA Playground Playwright automation"
+requires-python = ">=3.9"
+dependencies = [
+  "pytest>=8.0.0",
+  "pytest-playwright>=0.5.0",
+  "playwright>=1.40.0",
+  "pytest-html>=4.1.0",
+  "allure-pytest>=2.13.0",
+  "python-dotenv>=1.0.0",
+  "PyYAML>=6.0.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["pages*", "utils*", "config*"]
+
+[tool.pyright]
+include = ["pages", "tests", "utils", "config"]
+extraPaths = ["."]
+venvPath = "."
+venv = ".venv"
+pythonVersion = "3.9"
+typeCheckingMode = "basic"
+
+[tool.basedpyright]
+include = ["pages", "tests", "utils", "config"]
+extraPaths = ["."]
+venvPath = "."
+venv = ".venv"
+pythonVersion = "3.9"
+typeCheckingMode = "basic"
