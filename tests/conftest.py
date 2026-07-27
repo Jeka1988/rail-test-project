@@ -14,6 +14,7 @@ from playwright.sync_api import Page
 ROOT_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT_DIR))
 
+from enums.account import PageName
 from pages.accounts_page import AccountsPage
 from pages.bank_app import BankApp
 from pages.bill_pay_page import BillPayPage
@@ -52,13 +53,13 @@ def bank_app(page: Page, test_data: dict[str, Any]) -> BankApp:
     """Create page objects and expose a high-level application facade."""
     base_url = test_data["base_url"]
     pages = {
-        "login": LoginPage(page, base_url),
-        "dashboard": DashboardPage(page, base_url),
-        "accounts": AccountsPage(page, base_url),
-        "transfer": TransferPage(page, base_url),
-        "send_money": SendMoneyPage(page, base_url),
-        "bill_pay": BillPayPage(page, base_url),
-        "transactions": TransactionsPage(page, base_url),
+        PageName.LOGIN.value: LoginPage(page, base_url),
+        PageName.DASHBOARD.value: DashboardPage(page, base_url),
+        PageName.ACCOUNTS.value: AccountsPage(page, base_url),
+        PageName.TRANSFER.value: TransferPage(page, base_url),
+        PageName.SEND_MONEY.value: SendMoneyPage(page, base_url),
+        PageName.BILL_PAY.value: BillPayPage(page, base_url),
+        PageName.TRANSACTIONS.value: TransactionsPage(page, base_url),
     }
     return BankApp(pages)
 

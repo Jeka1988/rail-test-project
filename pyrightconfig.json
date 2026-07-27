@@ -3,7 +3,8 @@
     "pages",
     "tests",
     "utils",
-    "config"
+    "config",
+    "enums"
   ],
   "extraPaths": [
     "."

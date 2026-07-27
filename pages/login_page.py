@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 
 import allure
-from playwright.sync_api import expect
+from playwright.sync_api import Page, expect
 
 from pages.base_page import BasePage
 
@@ -13,15 +13,18 @@ from pages.base_page import BasePage
 class LoginPage(BasePage):
     path = "/bank/login"
 
+    def __init__(self, page: Page, base_url: str) -> None:
+        super().__init__(page, base_url)
+        self.brand_heading = page.get_by_role("heading", name="SecureBank")
+        self.username_input = page.get_by_test_id("login-username-input")
+        self.password_input = page.get_by_test_id("login-password-input")
+        self.sign_in_button = page.get_by_role("button", name="Sign In")
+        self.welcome_heading = page.get_by_role("heading", name=re.compile("Welcome", re.I))
+
     @allure.step("Login to Bank Demo")
     def login(self, username: str, password: str) -> None:
         self.open()
-        expect(self.page.get_by_role("heading", name="SecureBank")).to_be_visible()
-
-        self.page.get_by_test_id("login-username-input").fill(username)
-        self.page.get_by_test_id("login-password-input").fill(password)
-        self.click_button("Sign In")
-
-        expect(
-            self.page.get_by_role("heading", name=re.compile("Welcome", re.I))
-        ).to_be_visible(timeout=15_000)
+        self.username_input.fill(username)
+        self.password_input.fill(password)
+        self.sign_in_button.click()
+        expect(self.welcome_heading).to_be_visible(timeout=15_000)

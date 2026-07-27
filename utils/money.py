@@ -5,6 +5,8 @@ from __future__ import annotations
 import re
 from typing import Any
 
+from enums.account import AccountName
+
 
 def parse_currency(value: str | float | int) -> float:
     """Convert UI currency text such as '$1,234.56' into a float."""
@@ -30,19 +32,23 @@ def expected_lifecycle_balances(test_data: dict[str, Any]) -> dict[str, float]:
     reduce the source account and total net worth.
     """
     balances = {
-        account["name"]: float(account["opening_balance"])
+        AccountName(account["name"]).value: float(account["opening_balance"])
         for account in test_data["accounts"]
     }
 
     transfer = test_data["transfer"]
-    balances[transfer["from_account"]] -= float(transfer["amount"])
-    balances[transfer["to_account"]] += float(transfer["amount"])
+    from_account = AccountName(transfer["from_account"]).value
+    to_account = AccountName(transfer["to_account"]).value
+    balances[from_account] -= float(transfer["amount"])
+    balances[to_account] += float(transfer["amount"])
 
     send_money = test_data["send_money"]
-    balances[send_money["from_account"]] -= float(send_money["amount"])
+    send_from = AccountName(send_money["from_account"]).value
+    balances[send_from] -= float(send_money["amount"])
 
     bill_pay = test_data["bill_pay"]
-    balances[bill_pay["from_account"]] -= float(bill_pay["amount"])
+    bill_from = AccountName(bill_pay["from_account"]).value
+    balances[bill_from] -= float(bill_pay["amount"])
 
     balances["net_worth"] = sum(balances.values())
     return balances

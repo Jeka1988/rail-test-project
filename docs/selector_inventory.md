@@ -6,7 +6,10 @@ This file documents the selector strategy used for the Bank QA Playground tests.
 
 - Prefer stable `data-testid` selectors when they exist.
 - Use accessible locators (`get_by_role`, `get_by_label`, `get_by_text`) as the main fallback.
+- Declare all static locators at the top of each page class (`__init__`) with plain text selectors.
+- Action methods use only those locator attributes / dynamic locator helpers.
 - Keep all selectors inside `pages/`; tests must not call raw Playwright selectors.
+- Use enums in tests and functions for fixed domain values (account names/types, scenario names). Do not wrap enums inside locator definitions.
 - Avoid brittle XPath, CSS chains, nth-child selectors, and fixed sleeps.
 
 ## Pages Covered
