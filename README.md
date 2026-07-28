@@ -4,13 +4,11 @@ Python + Playwright automation project for the Bank QA Playground home exercise.
 
 ## What This Covers
 
-The suite contains one parametrized end-to-end lifecycle test:
+The suite contains three `@pytest.mark.e2e` scenarios:
 
-1. Start from a clean browser state.
-2. Log in to the Bank Demo app.
-3. Create the required accounts.
-4. Perform account-changing financial operations.
-5. Verify final account balances, total net worth, and transaction history.
+1. **Account lifecycle (happy path)** — clean session, login, create Checking/Savings, transfer + send money + bill pay, then verify balances, net worth, and transaction history.
+2. **Login negative** — wrong password stays on the login page with an error message.
+3. **Transfer negative** — overdraft transfer is rejected; balances, net worth, and history stay unchanged.
 
 ## Tech Stack
 
@@ -80,10 +78,18 @@ Run headed:
 pytest --headed
 ```
 
-Run the E2E scenario only:
+Run all E2E scenarios:
 
 ```bash
 pytest -m e2e
+```
+
+Run one file:
+
+```bash
+pytest tests/test_account_lifecycle_e2e.py
+pytest tests/test_login_negative.py
+pytest tests/test_transfer_negative.py
 ```
 
 ## Reports
@@ -113,7 +119,7 @@ allure serve reports/allure
 
 The assignment requires Python, so the suite uses pytest equivalents:
 
-- `class TestAccountLifecycle` groups tests like `test.describe`.
+- `class TestAccountLifecycle` / `TestLoginNegative` / `TestTransferNegative` group tests like `test.describe`.
 - `suite_lifecycle` fixture with `yield` acts as before-all/after-all setup and cleanup.
 - Function-scoped fixtures keep each test independent.
 
