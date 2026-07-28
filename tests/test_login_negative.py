@@ -7,6 +7,7 @@ from typing import Any
 import pytest
 from playwright.sync_api import expect
 
+from enums.account import LoginErrorMessage
 from pages.bank_app import BankApp
 
 
@@ -25,6 +26,6 @@ class TestLoginNegative:
 
         expect(bank_app.login_page.login_error_message).to_be_visible()
         expect(bank_app.login_page.login_error_message).to_contain_text(
-            "username or password you entered is incorrect"
+            LoginErrorMessage.INVALID_CREDENTIALS
         )
         expect(bank_app.login_page.welcome_heading).not_to_be_visible()

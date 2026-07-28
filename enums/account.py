@@ -15,6 +15,10 @@ class ScenarioName(str, Enum):
     INSUFFICIENT_FUNDS_TRANSFER = "insufficient_funds_transfer"
 
 
+class LoginErrorMessage(str, Enum):
+    INVALID_CREDENTIALS = "username or password you entered is incorrect"
+
+
 class PageName(str, Enum):
     LOGIN = "login"
     DASHBOARD = "dashboard"
