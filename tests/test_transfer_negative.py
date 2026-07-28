@@ -7,7 +7,7 @@ from typing import Any
 import pytest
 from playwright.sync_api import expect
 
-from enums.account import ScenarioName
+from enums.account import ScenarioName, TransferErrorMessage
 from pages.bank_app import BankApp
 from utils.money import format_currency
 
@@ -41,7 +41,7 @@ class TestTransferNegative:
 
         expect(bank_app.transfer_page.transfer_error_message).to_be_visible()
         expect(bank_app.transfer_page.transfer_error_message).to_contain_text(
-            "Insufficient funds"
+            TransferErrorMessage.INSUFFICIENT_FUNDS
         )
 
         for account in scenario["accounts"]:

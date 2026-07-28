@@ -19,6 +19,10 @@ class LoginErrorMessage(str, Enum):
     INVALID_CREDENTIALS = "username or password you entered is incorrect"
 
 
+class TransferErrorMessage(str, Enum):
+    INSUFFICIENT_FUNDS = "Insufficient funds"
+
+
 class PageName(str, Enum):
     LOGIN = "login"
     DASHBOARD = "dashboard"
