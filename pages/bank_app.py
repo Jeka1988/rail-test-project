@@ -43,6 +43,13 @@ class BankApp:
             credentials[CredentialKey.PASSWORD.value],
         )
 
+    @allure.step("Attempt login with provided credentials")
+    def attempt_login(self, credentials: dict[str, str]) -> None:
+        self.login_page.submit_login(
+            credentials[CredentialKey.USERNAME.value],
+            credentials[CredentialKey.PASSWORD.value],
+        )
+
     @allure.step("Create required lifecycle accounts")
     def create_required_accounts(self, accounts: list[dict[str, Any]]) -> None:
         for account in accounts:

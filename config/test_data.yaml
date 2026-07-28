@@ -4,6 +4,10 @@ credentials:
   username: standard_user
   password: bank_sauce
 
+invalid_credentials:
+  username: standard_user
+  password: wrong_password
+
 accounts:
   - name: Checking Account
     type: Checking

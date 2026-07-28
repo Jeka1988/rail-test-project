@@ -17,11 +17,17 @@ class LoginPage(BasePage):
         self.password_input = page.get_by_test_id("login-password-input")
         self.sign_in_button = page.get_by_role("button", name="Sign In")
         self.welcome_heading = page.get_by_test_id("dashboard-welcome-message")
+        self.login_error_banner = page.get_by_test_id("login-error-banner")
+        self.login_error_message = page.get_by_test_id("login-error-message")
 
-    @allure.step("Login to Bank Demo")
-    def login(self, username: str, password: str) -> None:
+    @allure.step("Submit login form")
+    def submit_login(self, username: str, password: str) -> None:
         self.open()
         self.username_input.fill(username)
         self.password_input.fill(password)
         self.sign_in_button.click()
+
+    @allure.step("Login to Bank Demo")
+    def login(self, username: str, password: str) -> None:
+        self.submit_login(username, password)
         expect(self.welcome_heading).to_be_visible(timeout=15_000)

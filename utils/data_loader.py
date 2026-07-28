@@ -54,6 +54,10 @@ def _apply_overrides(data: dict[str, Any]) -> None:
         credentials[CredentialKey.PASSWORD.value],
     )
 
+    invalid_credentials = data["invalid_credentials"]
+    _override_str(invalid_credentials, CredentialKey.USERNAME.value, "BANK_INVALID_USERNAME")
+    _override_str(invalid_credentials, CredentialKey.PASSWORD.value, "BANK_INVALID_PASSWORD")
+
     accounts = data["accounts"]
     checking = accounts[0]
     savings = accounts[1]
