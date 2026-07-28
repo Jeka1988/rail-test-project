@@ -1,5 +1,3 @@
-"""Shared page-object functionality."""
-
 from __future__ import annotations
 
 import re
@@ -9,8 +7,6 @@ from playwright.sync_api import Locator, Page, expect
 
 
 class BasePage:
-    """Base class with navigation and shared action helpers."""
-
     path = "/bank"
 
     def __init__(self, page: Page, base_url: str) -> None:
@@ -42,14 +38,11 @@ class BasePage:
         self.page.reload()
 
     def option_by_name(self, text: str) -> Locator:
-        """Return a dropdown option by accessible name / visible text."""
         return self.options.filter(has_text=text)
 
     def select_from_dropdown(self, dropdown: Locator, value: str) -> None:
-        """Select a value from a page-owned dropdown locator."""
         dropdown.click()
         self.option_by_name(value).first.click()
 
     def wait_for_operation_feedback(self) -> None:
-        """Wait until the UI confirms the submitted action finished."""
         expect(self.success_feedback.first).to_be_visible(timeout=10_000)

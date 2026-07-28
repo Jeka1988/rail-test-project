@@ -1,5 +1,3 @@
-"""Pytest fixtures and hooks for the Bank QA Playground suite."""
-
 from __future__ import annotations
 
 import sys
@@ -31,12 +29,7 @@ SCREENSHOTS_DIR = REPORTS_DIR / "screenshots"
 
 @pytest.fixture(scope="session", autouse=True)
 def suite_lifecycle() -> Generator[None, None, None]:
-    """
-    beforeAll/afterAll equivalent for the Python suite.
-
-    Per-test browser state is intentionally not initialized here because the PDF
-    requires every test run to be independent from previous state.
-    """
+    # Per-test browser state is not initialized here so each run stays independent.
     REPORTS_DIR.mkdir(exist_ok=True)
     SCREENSHOTS_DIR.mkdir(exist_ok=True)
     yield
@@ -44,13 +37,11 @@ def suite_lifecycle() -> Generator[None, None, None]:
 
 @pytest.fixture(scope="session")
 def test_data() -> dict[str, Any]:
-    """Load parametrized data used by the lifecycle scenario."""
     return load_test_data()
 
 
 @pytest.fixture
 def bank_app(page: Page, test_data: dict[str, Any]) -> BankApp:
-    """Create page objects and expose a high-level application facade."""
     base_url = test_data["base_url"]
     pages = {
         PageName.LOGIN.value: LoginPage(page, base_url),
@@ -66,7 +57,6 @@ def bank_app(page: Page, test_data: dict[str, Any]) -> BankApp:
 
 @pytest.fixture(scope="session")
 def browser_context_args() -> dict[str, Any]:
-    """Set stable browser context defaults for all tests."""
     return {
         "viewport": {"width": 1440, "height": 1000},
         "ignore_https_errors": True,
@@ -75,7 +65,6 @@ def browser_context_args() -> dict[str, Any]:
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item: pytest.Item, call: pytest.CallInfo[object]):
-    """Attach a screenshot to Allure and reports on test failure."""
     outcome = yield
     report = outcome.get_result()
 

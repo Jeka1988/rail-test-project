@@ -1,5 +1,3 @@
-"""Money parsing and lifecycle balance calculations."""
-
 from __future__ import annotations
 
 import re
@@ -18,17 +16,12 @@ def parse_currency(value: str | float | int) -> float:
 
 
 def format_currency(amount: float) -> str:
-    """Format a numeric amount as USD currency."""
     return f"${amount:,.2f}"
 
 
 def expected_lifecycle_balances(test_data: dict[str, Any]) -> dict[str, float]:
-    """
-    Calculate account balances after the configured lifecycle operations.
-
-    Internal transfers move funds between owned accounts. Send money and bill pay
-    reduce the source account and total net worth.
-    """
+    # Internal transfers move funds between owned accounts; send money and bill
+    # pay reduce the source account and total net worth.
     balances = {
         account["name"]: float(account["opening_balance"])
         for account in test_data["accounts"]

@@ -1,5 +1,3 @@
-"""High-level Bank Demo facade used by tests."""
-
 from __future__ import annotations
 
 from typing import Any
@@ -17,20 +15,14 @@ from pages.transfer_page import TransferPage
 
 
 class BankApp:
-    """
-    Composes page objects into business-level lifecycle actions.
-
-    Tests call this facade for actions and perform business assertions themselves.
-    """
-
-    def __init__(self, pages: dict[str, object]) -> None:
-        self.login_page: LoginPage = pages[PageName.LOGIN.value]  # type: ignore[assignment]
-        self.dashboard_page: DashboardPage = pages[PageName.DASHBOARD.value]  # type: ignore[assignment]
-        self.accounts_page: AccountsPage = pages[PageName.ACCOUNTS.value]  # type: ignore[assignment]
-        self.transfer_page: TransferPage = pages[PageName.TRANSFER.value]  # type: ignore[assignment]
-        self.send_money_page: SendMoneyPage = pages[PageName.SEND_MONEY.value]  # type: ignore[assignment]
-        self.bill_pay_page: BillPayPage = pages[PageName.BILL_PAY.value]  # type: ignore[assignment]
-        self.transactions_page: TransactionsPage = pages[PageName.TRANSACTIONS.value]  # type: ignore[assignment]
+    def __init__(self, pages: dict[str, Any]) -> None:
+        self.login_page: LoginPage = pages[PageName.LOGIN.value]
+        self.dashboard_page: DashboardPage = pages[PageName.DASHBOARD.value]
+        self.accounts_page: AccountsPage = pages[PageName.ACCOUNTS.value]
+        self.transfer_page: TransferPage = pages[PageName.TRANSFER.value]
+        self.send_money_page: SendMoneyPage = pages[PageName.SEND_MONEY.value]
+        self.bill_pay_page: BillPayPage = pages[PageName.BILL_PAY.value]
+        self.transactions_page: TransactionsPage = pages[PageName.TRANSACTIONS.value]
 
     @allure.step("Start from clean Bank Demo session")
     def start_clean_session(self) -> None:

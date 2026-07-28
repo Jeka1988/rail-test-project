@@ -1,5 +1,3 @@
-"""Bill pay page object."""
-
 from __future__ import annotations
 
 import re

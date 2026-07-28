@@ -1,5 +1,3 @@
-"""End-to-end account lifecycle coverage for the Bank Demo app."""
-
 from __future__ import annotations
 
 from typing import Any
@@ -14,8 +12,6 @@ from utils.money import expected_lifecycle_balances, format_currency
 
 @pytest.mark.e2e
 class TestAccountLifecycle:
-    """pytest equivalent of Playwright Test's test.describe block."""
-
     @pytest.mark.parametrize("scenario_name", [ScenarioName.DEFAULT_ACCOUNT_LIFECYCLE])
     def test_full_account_lifecycle(
         self,
@@ -23,7 +19,6 @@ class TestAccountLifecycle:
         bank_app: BankApp,
         test_data: dict[str, Any],
     ) -> None:
-        """Cover login, accounts, financial operations, and final verification."""
         bank_app.start_clean_session()
         bank_app.login(test_data["credentials"])
         expect(bank_app.dashboard_page.welcome_heading).to_be_visible()

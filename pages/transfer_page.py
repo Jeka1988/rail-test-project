@@ -1,5 +1,3 @@
-"""Internal transfer page object."""
-
 from __future__ import annotations
 
 import re

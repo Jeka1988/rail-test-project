@@ -1,5 +1,3 @@
-"""External send money page object."""
-
 from __future__ import annotations
 
 from typing import Any
@@ -52,11 +50,8 @@ class SendMoneyPage(BasePage):
         self.wait_for_operation_feedback()
 
     def _ensure_payee(self, send_data: dict[str, Any]) -> None:
-        """Create the payee when missing, then select it.
-
-        Avoid opening the payee combobox before Add — Base UI leaves a portal
-        backdrop that intercepts the Add button click.
-        """
+        # Avoid opening the payee combobox before Add — Base UI leaves a portal
+        # backdrop that intercepts the Add button click.
         payee_name = send_data["payee_name"]
         self.add_payee_button.click()
         expect(self.add_payee_dialog).to_be_visible()

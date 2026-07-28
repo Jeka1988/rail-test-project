@@ -1,5 +1,3 @@
-"""Negative transfer coverage for the Bank Demo app."""
-
 from __future__ import annotations
 
 from typing import Any
@@ -14,8 +12,6 @@ from utils.money import format_currency
 
 @pytest.mark.e2e
 class TestTransferNegative:
-    """Insufficient-funds transfer scenarios with expected failures."""
-
     @pytest.mark.parametrize("scenario_name", [ScenarioName.INSUFFICIENT_FUNDS_TRANSFER])
     def test_transfer_with_insufficient_funds(
         self,
@@ -23,7 +19,6 @@ class TestTransferNegative:
         bank_app: BankApp,
         test_data: dict[str, Any],
     ) -> None:
-        """Reject an overdraft transfer and leave balances unchanged."""
         scenario = test_data["insufficient_funds"]
 
         bank_app.start_clean_session()

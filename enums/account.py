@@ -1,5 +1,3 @@
-"""Shared enums for fixed domain values used by tests and page functions."""
-
 from __future__ import annotations
 
 from enum import Enum

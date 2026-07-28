@@ -1,5 +1,3 @@
-"""Negative login coverage for the Bank Demo app."""
-
 from __future__ import annotations
 
 from typing import Any
@@ -13,14 +11,11 @@ from pages.bank_app import BankApp
 
 @pytest.mark.e2e
 class TestLoginNegative:
-    """Independent negative login scenarios."""
-
     def test_login_with_wrong_password(
         self,
         bank_app: BankApp,
         test_data: dict[str, Any],
     ) -> None:
-        """Reject login when the password is incorrect and stay on the login page."""
         bank_app.start_clean_session()
         bank_app.attempt_login(test_data["invalid_credentials"])
 
