@@ -12,6 +12,7 @@ class CredentialKey(str, Enum):
 
 class ScenarioName(str, Enum):
     DEFAULT_ACCOUNT_LIFECYCLE = "default_account_lifecycle"
+    INSUFFICIENT_FUNDS_TRANSFER = "insufficient_funds_transfer"
 
 
 class PageName(str, Enum):

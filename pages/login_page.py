@@ -17,7 +17,6 @@ class LoginPage(BasePage):
         self.password_input = page.get_by_test_id("login-password-input")
         self.sign_in_button = page.get_by_role("button", name="Sign In")
         self.welcome_heading = page.get_by_test_id("dashboard-welcome-message")
-        self.login_error_banner = page.get_by_test_id("login-error-banner")
         self.login_error_message = page.get_by_test_id("login-error-message")
 
     @allure.step("Submit login form")

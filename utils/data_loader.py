@@ -92,6 +92,22 @@ def _apply_overrides(data: dict[str, Any]) -> None:
     _override_str(bill_pay, "biller_name", "BILLER_NAME")
     _override_str(bill_pay, "biller_reference", "BILLER_REFERENCE")
 
+    insufficient = data["insufficient_funds"]
+    insufficient_accounts = insufficient["accounts"]
+    _override_float(
+        insufficient_accounts[0],
+        "opening_balance",
+        "INSUFFICIENT_CHECKING_OPENING_BALANCE",
+    )
+    _override_float(
+        insufficient_accounts[1],
+        "opening_balance",
+        "INSUFFICIENT_SAVINGS_OPENING_BALANCE",
+    )
+    insufficient_transfer = insufficient["transfer"]
+    _override_float(insufficient_transfer, "amount", "INSUFFICIENT_TRANSFER_AMOUNT")
+    _override_str(insufficient_transfer, "memo", "INSUFFICIENT_TRANSFER_MEMO")
+
 
 def _override_str(section: dict[str, Any], key: str, env_name: str) -> None:
     if os.getenv(env_name) is not None:

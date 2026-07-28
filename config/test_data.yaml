@@ -37,3 +37,17 @@ bill_pay:
   biller_reference: ACC-0042
   amount: 75.50
   memo: July utility bill
+
+insufficient_funds:
+  accounts:
+    - name: Checking Account
+      type: Checking
+      opening_balance: 100.00
+    - name: Savings Account
+      type: Savings
+      opening_balance: 50.00
+  transfer:
+    from_account: Checking Account
+    to_account: Savings Account
+    amount: 500.00
+    memo: Overdraft attempt

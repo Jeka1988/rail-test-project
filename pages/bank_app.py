@@ -60,6 +60,10 @@ class BankApp:
         self.dashboard_page.open()
         return self.dashboard_page.get_total_net_worth()
 
+    @allure.step("Attempt transfer with provided data")
+    def attempt_transfer(self, transfer_data: dict[str, Any]) -> None:
+        self.transfer_page.submit_transfer(transfer_data)
+
     @allure.step("Perform account lifecycle financial operations")
     def perform_financial_lifecycle(self, test_data: dict[str, Any]) -> None:
         self.transfer_page.transfer_between_accounts(test_data["transfer"])
