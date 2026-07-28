@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import allure
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
 
 from pages.base_page import BasePage
 
@@ -19,6 +19,7 @@ class LoginPage(BasePage):
 
     @allure.step("Submit login form")
     def submit_login(self, username: str, password: str) -> None:
+        """Fill credentials and click Sign In without asserting success."""
         self.open()
         self.username_input.fill(username)
         self.password_input.fill(password)
@@ -26,5 +27,5 @@ class LoginPage(BasePage):
 
     @allure.step("Login to Bank Demo")
     def login(self, username: str, password: str) -> None:
+        """Submit valid credentials on the login form."""
         self.submit_login(username, password)
-        expect(self.welcome_heading).to_be_visible(timeout=15_000)

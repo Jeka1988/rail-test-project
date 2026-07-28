@@ -14,6 +14,7 @@ DEFAULT_DATA_PATH = ROOT_DIR / "config" / "test_data.yaml"
 
 
 def load_test_data(path: Path | None = None) -> dict[str, Any]:
+    """Load YAML test data and apply optional environment overrides."""
     load_dotenv(ROOT_DIR / ".env")
     data_path = _resolve_data_path(path)
 

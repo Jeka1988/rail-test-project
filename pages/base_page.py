@@ -12,11 +12,7 @@ class BasePage:
     def __init__(self, page: Page, base_url: str) -> None:
         self.page = page
         self.base_url = base_url.rstrip("/")
-        self.success_feedback = page.get_by_role("alert").or_(
-            page.get_by_test_id(re.compile(r".*success.*"))
-        ).or_(
-            page.get_by_text(re.compile(r"success|completed|transferred|sent|paid", re.I))
-        )
+        self.success_feedback = page.get_by_role("alert")
         self.options = page.get_by_role("option")
 
     @property
@@ -29,20 +25,30 @@ class BasePage:
 
     @allure.step("Open page")
     def open(self) -> None:
+        """Navigate to this page's URL."""
         self.page.goto(self.url)
 
     @allure.step("Reset browser storage for clean test state")
     def reset_browser_storage(self) -> None:
+        """Clear localStorage/sessionStorage and reload for an independent run."""
         self.page.goto(self.base_url)
         self.page.evaluate("() => { localStorage.clear(); sessionStorage.clear(); }")
         self.page.reload()
 
-    def option_by_name(self, text: str) -> Locator:
-        return self.options.filter(has_text=text)
+    def _matching_option(self, value: str) -> Locator:
+        """Visible option whose accessible name starts with the value."""
+        return self.page.get_by_role(
+            "option",
+            name=re.compile(rf"^{re.escape(value)}(?:\s|$)"),
+        ).locator("visible=true")
 
-    def select_from_dropdown(self, dropdown: Locator, value: str) -> None:
+    def _select_from_dropdown(self, dropdown: Locator, value: str) -> None:
+        """Open a dropdown and choose the visible option that matches the value."""
         dropdown.click()
-        self.option_by_name(value).first.click()
+        option = self._matching_option(value)
+        expect(option).to_be_visible()
+        option.click()
 
-    def wait_for_operation_feedback(self) -> None:
-        expect(self.success_feedback.first).to_be_visible(timeout=10_000)
+    def _wait_for_operation_feedback(self) -> None:
+        """Wait until the success alert confirms the action finished."""
+        expect(self.success_feedback).to_be_visible()

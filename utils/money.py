@@ -16,12 +16,12 @@ def parse_currency(value: str | float | int) -> float:
 
 
 def format_currency(amount: float) -> str:
+    """Format a numeric amount as USD currency text."""
     return f"${amount:,.2f}"
 
 
 def expected_lifecycle_balances(test_data: dict[str, Any]) -> dict[str, float]:
-    # Internal transfers move funds between owned accounts; send money and bill
-    # pay reduce the source account and total net worth.
+    """Compute expected account balances after transfer, send money, and bill pay."""
     balances = {
         account["name"]: float(account["opening_balance"])
         for account in test_data["accounts"]

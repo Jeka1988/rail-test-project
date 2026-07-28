@@ -11,11 +11,14 @@ from pages.bank_app import BankApp
 
 @pytest.mark.e2e
 class TestLoginNegative:
+    """Negative login coverage for invalid credentials."""
+
     def test_login_with_wrong_password(
         self,
         bank_app: BankApp,
         test_data: dict[str, Any],
     ) -> None:
+        """Wrong password shows an error and does not open the dashboard."""
         bank_app.start_clean_session()
         bank_app.attempt_login(test_data["invalid_credentials"])
 

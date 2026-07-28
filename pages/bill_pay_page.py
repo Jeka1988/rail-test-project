@@ -27,20 +27,15 @@ class BillPayPage(BasePage):
         self.amount_input = page.get_by_test_id("bill-amount-input")
         self.memo_input = page.get_by_test_id("bill-memo-input")
         self.review_button = page.get_by_test_id("review-bill-btn")
-        self.confirm_button = page.get_by_role("button", name="Confirm Payment").or_(
-            page.get_by_role("button", name="Submit Payment")
-        ).or_(
-            page.get_by_role("button", name="Pay Bill")
-        ).or_(
-            page.get_by_role("button", name="Pay")
-        )
+        self.confirm_button = page.get_by_test_id("confirm-bill-btn")
 
     @allure.step("Pay a bill")
     def pay_bill(self, bill_data: dict[str, Any]) -> None:
+        """Pay a bill to a biller and wait for success confirmation."""
         self.open()
         expect(self.page_heading).to_be_visible()
 
-        self.select_from_dropdown(self.from_account_select, bill_data["from_account"])
+        self._select_from_dropdown(self.from_account_select, bill_data["from_account"])
         self._ensure_biller(bill_data)
         self.amount_input.fill(str(bill_data["amount"]))
 
@@ -49,10 +44,11 @@ class BillPayPage(BasePage):
             self.memo_input.fill(memo)
 
         self.review_button.click()
-        self.confirm_button.first.click()
-        self.wait_for_operation_feedback()
+        self.confirm_button.click()
+        self._wait_for_operation_feedback()
 
     def _ensure_biller(self, bill_data: dict[str, Any]) -> None:
+        """Create the biller when needed and select it from search."""
         biller_name = bill_data["biller_name"]
         self.add_biller_button.click()
         expect(self.add_biller_dialog).to_be_visible()
@@ -62,4 +58,6 @@ class BillPayPage(BasePage):
         expect(self.add_biller_dialog).to_be_hidden()
 
         self.biller_search_input.fill(biller_name)
-        self.option_by_name(biller_name).first.click()
+        option = self._matching_option(biller_name)
+        expect(option).to_be_visible()
+        option.click()

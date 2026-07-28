@@ -18,4 +18,5 @@ class DashboardPage(BasePage):
 
     @allure.step("Read total net worth")
     def get_total_net_worth(self) -> float:
+        """Return the dashboard total net worth as a float."""
         return parse_currency(self.main_currency_amount.inner_text())

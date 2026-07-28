@@ -12,6 +12,8 @@ from utils.money import format_currency
 
 @pytest.mark.e2e
 class TestTransferNegative:
+    """Negative transfer coverage for insufficient funds."""
+
     @pytest.mark.parametrize("scenario_name", [ScenarioName.INSUFFICIENT_FUNDS_TRANSFER])
     def test_transfer_with_insufficient_funds(
         self,
@@ -19,6 +21,7 @@ class TestTransferNegative:
         bank_app: BankApp,
         test_data: dict[str, Any],
     ) -> None:
+        """Overdraft transfer is rejected; balances, net worth, and history stay unchanged."""
         scenario = test_data["insufficient_funds"]
 
         bank_app.start_clean_session()
@@ -27,9 +30,8 @@ class TestTransferNegative:
 
         bank_app.create_required_accounts(scenario["accounts"])
         for account in scenario["accounts"]:
-            account_name = account["name"]
             bank_app.accounts_page.open_accounts()
-            expect(bank_app.accounts_page.account_text(account_name)).to_be_visible()
+            expect(bank_app.accounts_page.account_text(account["name"])).to_be_visible()
 
         baseline_net_worth = bank_app.capture_baseline_net_worth()
         bank_app.attempt_transfer(scenario["transfer"])

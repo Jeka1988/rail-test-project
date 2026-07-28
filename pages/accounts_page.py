@@ -30,24 +30,24 @@ class AccountsPage(BasePage):
         self.account_row_balances = page.get_by_test_id("account-row-balance")
 
     def account_text(self, account_name: str) -> Locator:
-        return self.account_row_names.filter(has_text=account_name).first
-
-    def account_row(self, account_name: str) -> Locator:
-        return self.account_rows.filter(has_text=re.compile(re.escape(account_name)))
+        """Account name cell matching the given name."""
+        return self.account_row_names.filter(has_text=account_name)
 
     @allure.step("Open accounts page")
     def open_accounts(self) -> None:
+        """Open the accounts page and wait for it to be ready."""
         self.open()
         expect(self.page_heading).to_be_visible()
 
     @allure.step("Create bank account")
     def create_account(self, account: dict[str, Any]) -> None:
+        """Create an account from the provided name, type, and opening balance."""
         self.open_accounts()
         self.add_account_button.click()
         expect(self.add_account_dialog).to_be_visible()
 
         self.account_name_input.fill(account["name"])
-        self.select_from_dropdown(self.account_type_select, account["type"])
+        self._select_from_dropdown(self.account_type_select, account["type"])
         self.opening_balance_input.fill(str(account["opening_balance"]))
 
         if self.accept_terms_checkbox.count() > 0:
@@ -58,5 +58,7 @@ class AccountsPage(BasePage):
 
     @allure.step("Read account balance")
     def get_account_balance(self, account_name: str) -> float:
-        amount = self.account_row(account_name).locator(self.account_row_balances).first
+        """Return the current balance for the named account."""
+        row = self.account_rows.filter(has_text=re.compile(re.escape(account_name)))
+        amount = row.locator(self.account_row_balances)
         return parse_currency(amount.inner_text())

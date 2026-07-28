@@ -26,18 +26,15 @@ class SendMoneyPage(BasePage):
         self.amount_input = page.get_by_test_id("send-amount-input")
         self.note_input = page.get_by_test_id("send-note-input")
         self.review_button = page.get_by_test_id("review-send-btn")
-        self.confirm_button = page.get_by_role("button", name="Confirm Send").or_(
-            page.get_by_role("button", name="Send Money")
-        ).or_(
-            page.get_by_role("button", name="Send")
-        )
+        self.confirm_button = page.get_by_test_id("confirm-send-btn")
 
     @allure.step("Send money to external payee")
     def send_money(self, send_data: dict[str, Any]) -> None:
+        """Send money to a payee and wait for success confirmation."""
         self.open()
         expect(self.page_heading).to_be_visible()
 
-        self.select_from_dropdown(self.from_account_select, send_data["from_account"])
+        self._select_from_dropdown(self.from_account_select, send_data["from_account"])
         self._ensure_payee(send_data)
         self.amount_input.fill(str(send_data["amount"]))
 
@@ -46,12 +43,15 @@ class SendMoneyPage(BasePage):
             self.note_input.fill(note)
 
         self.review_button.click()
-        self.confirm_button.first.click()
-        self.wait_for_operation_feedback()
+        self.confirm_button.click()
+        self._wait_for_operation_feedback()
 
     def _ensure_payee(self, send_data: dict[str, Any]) -> None:
-        # Avoid opening the payee combobox before Add — Base UI leaves a portal
-        # backdrop that intercepts the Add button click.
+        """Create and select the payee.
+
+        Avoid opening the payee combobox before Add — Base UI leaves a portal
+        backdrop that intercepts the Add button click.
+        """
         payee_name = send_data["payee_name"]
         self.add_payee_button.click()
         expect(self.add_payee_dialog).to_be_visible()
@@ -61,4 +61,4 @@ class SendMoneyPage(BasePage):
         self.payee_account_input.fill(send_data["payee_account"])
         self.save_payee_button.click()
         expect(self.add_payee_dialog).to_be_hidden()
-        self.select_from_dropdown(self.payee_select, payee_name)
+        self._select_from_dropdown(self.payee_select, payee_name)
