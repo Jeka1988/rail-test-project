@@ -31,7 +31,6 @@ class BankApp:
         self.send_money_page: SendMoneyPage = pages[PageName.SEND_MONEY.value]  # type: ignore[assignment]
         self.bill_pay_page: BillPayPage = pages[PageName.BILL_PAY.value]  # type: ignore[assignment]
         self.transactions_page: TransactionsPage = pages[PageName.TRANSACTIONS.value]  # type: ignore[assignment]
-        self.baseline_net_worth: float | None = None
 
     @allure.step("Start from clean Bank Demo session")
     def start_clean_session(self) -> None:
@@ -52,8 +51,7 @@ class BankApp:
     @allure.step("Capture baseline net worth")
     def capture_baseline_net_worth(self) -> float:
         self.dashboard_page.open()
-        self.baseline_net_worth = self.dashboard_page.get_total_net_worth()
-        return self.baseline_net_worth
+        return self.dashboard_page.get_total_net_worth()
 
     @allure.step("Perform account lifecycle financial operations")
     def perform_financial_lifecycle(self, test_data: dict[str, Any]) -> None:

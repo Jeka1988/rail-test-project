@@ -5,16 +5,6 @@ from __future__ import annotations
 from enum import Enum
 
 
-class AccountType(str, Enum):
-    CHECKING = "Checking"
-    SAVINGS = "Savings"
-
-
-class AccountName(str, Enum):
-    CHECKING = "Checking Account"
-    SAVINGS = "Savings Account"
-
-
 class CredentialKey(str, Enum):
     USERNAME = "username"
     PASSWORD = "password"

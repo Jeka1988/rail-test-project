@@ -9,7 +9,7 @@ This file documents the selector strategy used for the Bank QA Playground tests.
 - Declare all static locators at the top of each page class (`__init__`) with plain text selectors.
 - Action methods use only those locator attributes / dynamic locator helpers.
 - Keep all selectors inside `pages/`; tests must not call raw Playwright selectors.
-- Use enums in tests and functions for fixed domain values (account names/types, scenario names). Do not wrap enums inside locator definitions.
+- Use enums in tests and functions for fixed domain values (credential keys, scenario names, page names). Do not wrap enums inside locator definitions.
 - Avoid brittle XPath, CSS chains, nth-child selectors, and fixed sleeps.
 
 ## Pages Covered

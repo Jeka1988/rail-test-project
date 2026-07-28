@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import re
-
 import allure
 from playwright.sync_api import Page, expect
 
@@ -15,11 +13,10 @@ class LoginPage(BasePage):
 
     def __init__(self, page: Page, base_url: str) -> None:
         super().__init__(page, base_url)
-        self.brand_heading = page.get_by_role("heading", name="SecureBank")
         self.username_input = page.get_by_test_id("login-username-input")
         self.password_input = page.get_by_test_id("login-password-input")
         self.sign_in_button = page.get_by_role("button", name="Sign In")
-        self.welcome_heading = page.get_by_role("heading", name=re.compile("Welcome", re.I))
+        self.welcome_heading = page.get_by_test_id("dashboard-welcome-message")
 
     @allure.step("Login to Bank Demo")
     def login(self, username: str, password: str) -> None:

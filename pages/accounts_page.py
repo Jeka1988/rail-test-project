@@ -18,20 +18,24 @@ class AccountsPage(BasePage):
     def __init__(self, page: Page, base_url: str) -> None:
         super().__init__(page, base_url)
         self.page_heading = page.get_by_role("heading", name="My Accounts")
-        self.add_account_button = page.get_by_role("button", name="Add Account")
+        self.add_account_button = page.get_by_test_id("add-account-btn")
         self.add_account_dialog = page.get_by_test_id("add-account-dialog")
-        self.account_form = page.get_by_test_id("account-form")
         self.account_name_input = page.get_by_test_id("account-form-name-input")
         self.account_type_select = page.get_by_test_id("account-form-type-select")
-        self.opening_balance_input = page.locator("input[name='account_balance_field']")
-        self.accept_terms_checkbox = page.get_by_test_id("account-form-accept-terms-checkbox")
+        self.opening_balance_input = self.add_account_dialog.get_by_role("spinbutton")
+        self.accept_terms_checkbox = page.get_by_role(
+            "checkbox", name=re.compile(r"terms", re.I)
+        )
         self.save_account_button = page.get_by_test_id("save-account-form-btn")
+        self.account_rows = page.get_by_test_id("account-row")
+        self.account_row_names = page.get_by_test_id("account-row-name")
+        self.account_row_balances = page.get_by_test_id("account-row-balance")
 
     def account_text(self, account_name: str) -> Locator:
-        return self.page.get_by_text(account_name, exact=False).first
+        return self.account_row_names.filter(has_text=account_name).first
 
     def account_row(self, account_name: str) -> Locator:
-        return self.page.get_by_role("row", name=re.compile(re.escape(account_name)))
+        return self.account_rows.filter(has_text=re.compile(re.escape(account_name)))
 
     @allure.step("Open accounts page")
     def open_accounts(self) -> None:
@@ -56,5 +60,5 @@ class AccountsPage(BasePage):
 
     @allure.step("Read account balance")
     def get_account_balance(self, account_name: str) -> float:
-        amount = self.account_row(account_name).get_by_text(re.compile(r"\$[\d,]+\.\d{2}")).first
+        amount = self.account_row(account_name).locator(self.account_row_balances).first
         return parse_currency(amount.inner_text())

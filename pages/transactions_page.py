@@ -14,9 +14,16 @@ class TransactionsPage(BasePage):
     def __init__(self, page: Page, base_url: str) -> None:
         super().__init__(page, base_url)
         self.page_heading = page.get_by_role("heading", name="Transactions")
+        self.transaction_entries = page.get_by_test_id("all-txn-row")
+        self.transaction_amounts = page.get_by_test_id("all-txn-amount")
 
     def transaction_row(self, description: str) -> Locator:
-        return self.page.get_by_text(description, exact=False).first.locator("..")
+        return self.transaction_entries.filter(has_text=description).first
+
+    def transaction_amount(self, description: str, amount: str) -> Locator:
+        return self.transaction_row(description).locator(self.transaction_amounts).filter(
+            has_text=amount
+        )
 
     @allure.step("Open transactions page")
     def open_transactions(self) -> None:

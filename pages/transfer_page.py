@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
 import allure
@@ -20,7 +21,9 @@ class TransferPage(BasePage):
         self.from_account_select = page.get_by_test_id("transfer-from-select")
         self.to_account_select = page.get_by_test_id("transfer-to-select")
         self.amount_input = page.get_by_test_id("transfer-amount-input")
-        self.memo_input = page.locator("input[name='transfer_memo_field']")
+        self.memo_input = self.transfer_form.get_by_placeholder(
+            re.compile(r"Rent|vacation", re.I)
+        )
         self.review_button = page.get_by_test_id("review-transfer-btn")
         self.confirm_button = page.get_by_role("button", name="Confirm Transfer").or_(
             page.get_by_role("button", name="Submit Transfer")

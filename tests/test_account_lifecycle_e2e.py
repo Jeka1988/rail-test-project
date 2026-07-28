@@ -24,8 +24,6 @@ class TestAccountLifecycle:
         test_data: dict[str, Any],
     ) -> None:
         """Cover login, accounts, financial operations, and final verification."""
-        assert scenario_name is ScenarioName.DEFAULT_ACCOUNT_LIFECYCLE
-
         bank_app.start_clean_session()
         bank_app.login(test_data["credentials"])
         expect(bank_app.dashboard_page.welcome_heading).to_be_visible()
@@ -72,4 +70,8 @@ class TestAccountLifecycle:
         for description, amount in expected_entries:
             row = bank_app.transactions_page.transaction_row(description)
             expect(row).to_be_visible()
-            expect(row.get_by_text(format_currency(float(amount)))).to_be_visible()
+            expect(
+                bank_app.transactions_page.transaction_amount(
+                    description, format_currency(float(amount))
+                )
+            ).to_be_visible()

@@ -63,7 +63,7 @@ BANK_USERNAME=overdraft_user BANK_PASSWORD=bank_sauce TRANSFER_AMOUNT=50 pytest 
 ```
 
 ```bash
-TEST_DATA_PATH=config/test_data_alt.yaml pytest -m e2e
+TEST_DATA_PATH=config/test_data.yaml pytest -m e2e
 ```
 
 Useful overrides include credentials (`BANK_USERNAME`, `BANK_PASSWORD`), accounts (`CHECKING_ACCOUNT_NAME`, `SAVINGS_ACCOUNT_TYPE`, …), transfer (`TRANSFER_FROM`, `TRANSFER_AMOUNT`, …), send money (`SEND_AMOUNT`, `PAYEE_NAME`, …), and bill pay (`BILL_AMOUNT`, `BILLER_NAME`, …). Set `TEST_DATA_PATH` to swap the full YAML file.
